@@ -62,9 +62,9 @@ log(whoassigned);
 document.querySelector("#assignedTo-dropdown > div.dropdown.v-select.id-search-field.single.searching.searchable > div.ir-search-icon.assignedtome-icon > div > span").click();
     //sleep(5000);
 
-// partial page begins reload...
+// partial page begins reloads after above click ...
 
-check();
+save(); // runs check() before saving to make sure the page has updated with me assigned
 
 log('done');
 
