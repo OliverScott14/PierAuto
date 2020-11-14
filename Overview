@@ -1,6 +1,7 @@
 /*
 
 STEPS: 
+----------
 1) find current assigned user  
 2) click 'assign to me' button
 //partial page starts reloading
@@ -9,8 +10,8 @@ STEPS:
 4) click save button
 //partial page starts reloading
 5) validate page done reloading
-6) .. and essentially repeat above 
-with next steps over and over 
+---------- Phase 2 ------------
+6) 
 
 ISSUES:
 every way I've tried either freezes page on check() loop, 
