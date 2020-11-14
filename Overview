@@ -25,7 +25,6 @@ or completes (clicks save) without completing the assign to me page reload/updat
 // ------- FUNCTIONS --------
 
 function checkAssigned() { // loops until partil page reload completes 
-    log('check()');
     var count = 0;
     while(!whoassigned.includes(user)) { // page freezes while loop continues 
         log('loop : ' + count + '   -  ' + whoassigned);
