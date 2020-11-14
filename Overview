@@ -24,18 +24,18 @@ or completes (clicks save) without completing the assign to me page reload/updat
 
 // ------- FUNCTIONS --------
 
-function checkassigned() { // loops until partil page reload completes 
+function checkAssigned() { // loops until partil page reload completes 
     log('check()');
     var count = 0;
-    while(!whoassigned.includes(user)) {
+    while(!whoassigned.includes(user)) { // page freezes while loop continues 
         log('loop : ' + count + '   -  ' + whoassigned);
         whoassigned = document.getElementsByClassName('label-info')[0].innerText;
        sleep(2000);
        count++;
-    }
+    } 
 }
 function save() {   // tried async 
-    checkassigned(); // and await function .. same result 
+    checkAssigned(); // and await function .. same result 
     log('saving');
     document.getElementById('btnSaveAndUpdate').click();
     log('saved');
@@ -60,7 +60,9 @@ log(whoassigned);
 
 // clicks assign to me button
 document.querySelector("#assignedTo-dropdown > div.dropdown.v-select.id-search-field.single.searching.searchable > div.ir-search-icon.assignedtome-icon > div > span").click();
-    //sleep(5000);
+// ^ this doesn't take before the checkAssigned() loop freezes the page
+
+//sleep(5000);
 
 // partial page begins reloads after above click ...
 
