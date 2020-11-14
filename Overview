@@ -20,28 +20,30 @@ or completes (clicks save) without completing the assign to me page reload/updat
 
 
 
+
+
 // --------------------------- SCRIPT ----------------------------
 
 // ------- FUNCTIONS --------
 
-function checkAssigned() { // loops until partil page reload completes 
+async function checkAssigned() { // loops until partil page reload completes 
     var count = 0;
-    while(!whoassigned.includes(user)) { // page freezes while loop continues 
+    while(!whoassigned.includes(user) && count < 5) { // page freezes while loop continues 
         log('loop : ' + count + '   -  ' + whoassigned);
         whoassigned = document.getElementsByClassName('label-info')[0].innerText;
-       sleep(2000);
+       await sleep(2000);
        count++;
     } 
 }
-function save() {   // tried async 
-    checkAssigned(); // and await function .. same result 
+async function save() {   // tried async 
+    await checkAssigned(); // and await function .. same result 
     log('saving');
     document.getElementById('btnSaveAndUpdate').click();
     log('saved');
 }                                   
-function sleep(milliseconds) {
-    var start = Date.now();
-    while ((Date.now() - start) < milliseconds);
+// sleep
+function sleep(ms) {    // usage: await sleep(1000)
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 function log(message) {
     console.log(message);
@@ -70,6 +72,9 @@ save(); // runs check() before saving to make sure the page has updated with me 
 log('done');
 
 // --------------------------- SCRIPT DONE ----------------------------
+
+
+
 
 
 
