@@ -1,23 +1,42 @@
-/*
 
-STEPS: 
-----------
-1) find current assigned user  
-2) click 'assign to me' button
-//partial page starts reloading
-3) while !user label = me
-	loop,sleep,loop..
+How run all the below steps in order from first to last?
+?????????????????
+async 1st{}
+async 2rd{await 1st);
+async 3rd{await 2nd);
+async 4th{await 3rd);
+start(4th);
+?????????????????
+
+--- 1st ---
+1) find assigned user 
+2) click assign to me button
+// page reloads //
+3) while !user label = me (loop,sleep,loop..)
 4) click save button
-//partial page starts reloading
-5) validate page done reloading
----------- Phase 2 ------------
-6) 
+// page reloads //
+5) validated page done reloading 
 
-ISSUES:
-every way I've tried either freezes page on check() loop, 
-or completes (clicks save) without completing the assign to me page reload/updating  
+--- 2nd ---
+6) click 'Status' dropdown, click 'Working'
+// page reloads //
+7) validated page done reloading 
 
-*/
+--- 3rd ---
+8) click 'Cause' dropdown, wait for options
+9) select cause  
+10) wait for 'Resolution' dropdown to load, click dropdown
+11) select resolution
+12) click 'Save' button
+// page reloads //   
+13) validated page done reloading
+
+--- 4th ---
+14) click 'Status' dropdown, click 'Resolved'
+// page reloads //
+15) validated page done reloading
+
+
 
 
 
@@ -32,20 +51,56 @@ async function checkAssigned() { // loops until partil page reload completes
     while(!whoassigned.includes(user) && count < 5) { // page freezes while loop continues 
         log('loop : ' + count + '   -  ' + whoassigned);
         whoassigned = document.getElementsByClassName('label-info')[0].innerText;
-       await sleep(2000);
+       await sleep(1000);
        count++;
     } 
 }
-async function save() {   // tried async 
-    await checkAssigned(); // and await function .. same result 
+
+async function saveDone() {
+  
+    var actLen = actEl.childElementCount - 1;  
+ 
+    // latest activity 
+    var actText = actEl.childNodes[actLen].innerText;
+	   // "Assignee 		Matt Searight		Scott Oliver		11/13/2020  10:29:43 PM		Oliver, Scott [CTO]"
+
+    var act = actText.split('\n'); //  [5]  ^ 
+	   // {field, Previous, Current, Modified date, modified By}
+
+	// CHECK field for action just saved ... 
+}
+async function save(func) { //input await function, then clicks save   
+    await func();
     log('saving');
-    document.getElementById('btnSaveAndUpdate').click();
+
+    // verify page update done after save click
+    var actLen = document.getElementsByClassName('ag-center-cols-container')[1].childElementCount - 1;
+    var actLen2 = document.getElementsByClassName('ag-center-cols-container')[1].childElementCount - 1;
+    console.log(actLen);
+    /*
+    // latest activity 
+    var actText = actEl.childNodes[actLen].innerText;
+	// "Assignee 		Matt Searight		Scott Oliver		11/13/2020  10:29:43 PM		Oliver, Scott [CTO]"
+    var act = actText.split('\n');  [5]   
+	// {field, Previous, Current, Modified date, modified By}
+	*/
+	document.getElementById('btnSaveAndUpdate').click();
+    
+
+    while(actLen2 !== actLen + 1) {
+    	log('save load - loop ++');
+        actLen2 = document.getElementsByClassName('ag-center-cols-container')[1].childElementCount - 1;
+        console.log(actLen2);
+        await sleep(1000);
+    }
+    
     log('saved');
-}                                   
-// sleep
+}                        
+// SLEEP
 function sleep(ms) {    // usage: await sleep(1000)
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+// LOG 
 function log(message) {
     console.log(message);
 }
@@ -62,17 +117,18 @@ log(whoassigned);
 
 // clicks assign to me button
 document.querySelector("#assignedTo-dropdown > div.dropdown.v-select.id-search-field.single.searching.searchable > div.ir-search-icon.assignedtome-icon > div > span").click();
-// ^ this doesn't take before the checkAssigned() loop freezes the page
 
-//sleep(5000);
+// save check and save 
+save(checkAssigned); // runs check() before saving to make sure the page has updated with me assigned
 
-// partial page begins reloads after above click ...
 
-save(); // runs check() before saving to make sure the page has updated with me assigned
+
+
 
 log('done');
 
 // --------------------------- SCRIPT DONE ----------------------------
+
 
 
 
