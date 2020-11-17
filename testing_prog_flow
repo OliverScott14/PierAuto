@@ -1,0 +1,86 @@
+function sleep(ms) {    // usage: await sleep(1000)
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function getCauses() {  //get all causes for prompt use
+    var counter = 0;
+    var pass = false;
+    while(pass == false){ 
+        try {
+            var a = document.getElementsByClassName("dropdown-menu scrollbar dropdown-menu-top")[0].innerText.split('\n');;
+            console.log("trying");
+            pass = true;
+        }
+        catch {
+            console.log("causes..." + counter);
+            await sleep(100);
+        }
+        counter++;
+    }
+}
+
+async function listCause() {
+
+    await getCauses();
+
+    var causes = document.getElementsByClassName("dropdown-menu scrollbar dropdown-menu-top")[0].innerText.split('\n');
+
+    var causeList = "";
+    for(let i = 0; i < causes.length; i++) {
+        console.log(i + " - " + causes[i]);
+        causeList += (i + ' - ' + causes[i] + '\n');
+    }
+
+    document.getElementById('cause-ir-details').dispatchEvent(new Event('blur'));
+    await sleep(100);
+   
+    console.log(causeList);
+    var response = prompt('Cause:\n' + causeList);
+
+}
+
+//---- Start ------
+
+document.getElementById('cause-ir-details').dispatchEvent(new Event('focus'));
+
+
+listCause();
+
+//---- END -------
+
+
+
+
+
+/*
+-- FAILED ATTEMPTS --   
+                      // to run in order without embedded functions 
+                      // removed await getCauses(); to attempt these... 
+
+#1)
+let result = await Promise.all([
+    getCauses(),
+    listCause()
+]);
+
+#2)
+(async () => {
+    let listCause = await getCauses();
+})();
+
+-------------------
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
